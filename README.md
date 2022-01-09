@@ -1,9 +1,9 @@
 # aws-ecr-fargate-alb-api 🐳
 
-![Stars](https://img.shields.io/github/stars/tquangdo/aws-ecr-fargatea-lb-api?color=f05340)
-![Issues](https://img.shields.io/github/issues/tquangdo/aws-ecr-fargatea-lb-api?color=f05340)
-![Forks](https://img.shields.io/github/forks/tquangdo/aws-ecr-fargatea-lb-api?color=f05340)
-[![Report an issue](https://img.shields.io/badge/Support-Issues-green)](https://github.com/tquangdo/aws-ecr-fargatea-lb-api/issues/new)
+![Stars](https://img.shields.io/github/stars/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
+![Issues](https://img.shields.io/github/issues/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
+![Forks](https://img.shields.io/github/forks/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
+[![Report an issue](https://img.shields.io/badge/Support-Issues-green)](https://github.com/tquangdo/aws-ecr-fargate-alb-api/issues/new)
 
 ![overview](screenshots/overview.png)
 
