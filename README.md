@@ -5,8 +5,10 @@
 ![Forks](https://img.shields.io/github/forks/tquangdo/aws-ecr-fargatea-lb-api?color=f05340)
 [![Report an issue](https://img.shields.io/badge/Support-Issues-green)](https://github.com/tquangdo/aws-ecr-fargatea-lb-api/issues/new)
 
+![overview](screenshots/overview.png)
+
 ## reference
-1. [youtube](https://www.youtube.com/watch?v=o7s-eigrMAI&list=PL9nWRykSBSFihWbXBDX57EdpOmZxpUaVR&index=2)
+[youtube](https://www.youtube.com/watch?v=o7s-eigrMAI&list=PL9nWRykSBSFihWbXBDX57EdpOmZxpUaVR&index=2)
 
 ## deploy local
 ```shell
@@ -66,7 +68,7 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
 + final result: status=`running`
 ![ecsservice](screenshots/ecsservice.png)
 
-## deploy ec2
+## deploy container
 ### service's SG
 + ecs > service `DemoAppServiceUpdate` > click to SG `DemoAp-9923` 
 + add `Inbound rules`: All TCP + SG=`DemoAppLB-SG`
