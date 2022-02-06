@@ -1,9 +1,9 @@
-# aws-ecr-fargate-alb-api 🐳
+# aws-ecr-ecs-fargate-alb-api 🐳
 
-![Stars](https://img.shields.io/github/stars/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
-![Issues](https://img.shields.io/github/issues/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
-![Forks](https://img.shields.io/github/forks/tquangdo/aws-ecr-fargate-alb-api?color=f05340)
-[![Report an issue](https://img.shields.io/badge/Support-Issues-green)](https://github.com/tquangdo/aws-ecr-fargate-alb-api/issues/new)
+![Stars](https://img.shields.io/github/stars/tquangdo/aws-ecr-ecs-fargate-alb-api?color=f05340)
+![Issues](https://img.shields.io/github/issues/tquangdo/aws-ecr-ecs-fargate-alb-api?color=f05340)
+![Forks](https://img.shields.io/github/forks/tquangdo/aws-ecr-ecs-fargate-alb-api?color=f05340)
+[![Report an issue](https://img.shields.io/badge/Support-Issues-green)](https://github.com/tquangdo/aws-ecr-ecs-fargate-alb-api/issues/new)
 
 ![overview](screenshots/overview.png)
 
@@ -77,3 +77,20 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
 ![albmonitor](screenshots/albmonitor.png)
 + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/` (ALB's DNS) on browser will see `This is our Home Page!!!`
 + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/app` (ALB's DNS) on browser will see `Hello, from App!`
+
+## note
+### about folder `LaravelSampleCode`: xu li worker-redis-Laravel
+#### A) AWS Console
+- ECS clusters=`jil-dev-backend`
+- tab `Tasks` > click bat ki `Task definition` > muc `Container definitions` > click mui ten so xuong > call CMD "laravel-worker"
+![worker](screenshots/worker.png)
+#### B) src code
+- `LaravelSampleCode/xxx-backend/Dockerfile`
+```shell
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+```
+- `LaravelSampleCode/rootfs/usr/local/bin/docker-entrypoint.sh`
+```shell
+"laravel-worker")
+    exec /usr/bin/tini -- /usr/local/bin/php /usr/src/app/artisan queue:work"
+```
