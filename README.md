@@ -25,72 +25,73 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
 + same with https://github.com/tquangdo/aws-ecr-ecs-flask-viewpics
 
 ## ecs
-### create cluster:
-+ template=`Fargate`
-+ cluster name=`ECSDemoAppCluster`
-### create task definition
-+ launch type=`Fargate`
-+ Task definition name=`ECSDemoTaskDefinition`
-+ Task memory (MiB) = 2GB
-+ Task CPU (unit) = 1 vCPU
-#### add container
-+ Container name=`DemoAppContainer`
-+ Image=`ACCOUNTIDHERE!!!.dkr.ecr.us-east-1.amazonaws.com/ecr-test:latest`
-+ Memory Limits (MiB) = 2048
-+ Port mappings=`8081`
-### create ALB
-+ balancer types=`ALB`
-+ balancer name=`DemoALB`
-+ Network mapping=`us-east-1a`&`us-east-1b`
-#### create SG
-+ name=`DemoAppLB-SG`
-+ inbound rule: TCP, 80, 0.0.0.0/0
-#### create target group
-+ type=`IP`
-+ name=`DemoAppTG`
-+ port=`8081`
-
-+ final result: wait until state=`active`
-![alb](screenshots/alb.png)
-### create service
-+ type=`Fargate`
-+ Service name=`DemoAppService`
-+ Number of tasks=`2`
-+ vpc=`default`
-+ subnets=`1a` & `1b`
-> + default SG=`DemoAp-9923`
-+ Load balancer type=`ALB`
-+ Load balancer name=`DemoALB`
-+ Container to load balance=`Add to LB`
-+ Production listener port=`80:HTTP`
-+ Target group name=`DemoAppTG`
-> if NOT see TG here, the reason is NOT chose "type=`IP`"
-+ final result: status=`running`
-![ecsservice](screenshots/ecsservice.png)
+1. ### create cluster:
+    + template=`Fargate`
+    + cluster name=`ECSDemoAppCluster`
+1. ### create task definition
+    + launch type=`Fargate`
+    + Task definition name=`ECSDemoTaskDefinition`
+    + Task memory (MiB) = 2GB
+    + Task CPU (unit) = 1 vCPU
+    1. #### add container
+        + Container name=`DemoAppContainer`
+        + Image=`ACCOUNTIDHERE!!!.dkr.ecr.us-east-1.amazonaws.com/ecr-test:latest`
+        + Memory Limits (MiB) = 2048
+        + Port mappings=`8081`
+1. ### create ALB
+    + balancer types=`ALB`
+    + balancer name=`DemoALB`
+    + Network mapping=`us-east-1a`&`us-east-1b`
+    1. #### create SG
+        + name=`DemoAppLB-SG`
+        + inbound rule: TCP, 80, 0.0.0.0/0
+    1. #### create target group
+        + type=`IP`
+        + name=`DemoAppTG`
+        + port=`8081`
+    1. #### final result:
+        + wait until state=`active`
+        ![alb](screenshots/alb.png)
+1. ### create service
+    + type=`Fargate`
+    + Service name=`DemoAppService`
+    + Number of tasks=`2`
+    + vpc=`default`
+    + subnets=`1a` & `1b`
+    > + default SG=`DemoAp-9923`
+    + Load balancer type=`ALB`
+    + Load balancer name=`DemoALB`
+    + Container to load balance=`Add to LB`
+    + Production listener port=`80:HTTP`
+    + Target group name=`DemoAppTG`
+    > if NOT see TG here, the reason is NOT chose "type=`IP`"
+    + final result: status=`running`
+    ![ecsservice](screenshots/ecsservice.png)
 
 ## deploy container
-### service's SG
-+ ecs > service `DemoAppServiceUpdate` > click to SG `DemoAp-9923` 
-+ add `Inbound rules`: All TCP + SG=`DemoAppLB-SG`
-![servicesg](screenshots/servicesg.png)
-+ ALB `DemoALB` tab `Monitoring` will see "up line"
-![albmonitor](screenshots/albmonitor.png)
-+ access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/` (ALB's DNS) on browser will see `This is our Home Page!!!`
-+ access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/app` (ALB's DNS) on browser will see `Hello, from App!`
+1. ### service's SG
+    + ecs > service `DemoAppServiceUpdate` > click to SG `DemoAp-9923` 
+    + add `Inbound rules`: All TCP + SG=`DemoAppLB-SG`
+    ![servicesg](screenshots/servicesg.png)
+1. ### result
+    + ALB `DemoALB` tab `Monitoring` will see "up line"
+    ![albmonitor](screenshots/albmonitor.png)
+    + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/` (ALB's DNS) on browser will see `This is our Home Page!!!`
+    + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/app` (ALB's DNS) on browser will see `Hello, from App!`
 
 ## note
-### about folder `LaravelSampleCode`: xu li worker-redis-Laravel
-#### A) AWS Console
-- ECS clusters=`xxx-dev-backend`
-- tab `Tasks` > click bat ki `Task definition` > muc `Container definitions` > click mui ten so xuong > call CMD "laravel-worker"
-![worker](screenshots/worker.png)
-#### B) src code
-- `LaravelSampleCode/xxx-backend/Dockerfile`
-```shell
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-```
-- `LaravelSampleCode/rootfs/usr/local/bin/docker-entrypoint.sh`
-```shell
-"laravel-worker")
-    exec /usr/bin/tini -- /usr/local/bin/php /usr/src/app/artisan queue:work"
-```
+1. ### about folder `LaravelSampleCode`: xu li worker-redis-Laravel
+    1. #### AWS Console
+        - ECS clusters=`xxx-dev-backend`
+        - tab `Tasks` > click bat ki `Task definition` > muc `Container definitions` > click mui ten so xuong > call CMD "laravel-worker"
+        ![worker](screenshots/worker.png)
+    1. #### src code
+        - `LaravelSampleCode/xxx-backend/Dockerfile`
+        ```shell
+        ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+        ```
+        - `LaravelSampleCode/rootfs/usr/local/bin/docker-entrypoint.sh`
+        ```shell
+        "laravel-worker")
+            exec /usr/bin/tini -- /usr/local/bin/php /usr/src/app/artisan queue:work"
+        ```
