@@ -41,6 +41,9 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
 1. ### create ALB
     + balancer types=`ALB`
     + balancer name=`DemoALB`
+    + listener port=80
+    > ⚠️⚠️IMPORTANT⚠️⚠️ different with TG's port=8081
+![listen_port](screenshots/listen_port.png)
     + Network mapping=`us-east-1a`&`us-east-1b`
     1. #### create SG
         + name=`DemoAppLB-SG`
