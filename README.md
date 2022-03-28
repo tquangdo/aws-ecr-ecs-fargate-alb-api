@@ -85,9 +85,11 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
 ## note
 1. ### about folder `LaravelSampleCode`: xu li worker-redis-Laravel
     1. #### AWS Console
-        - ECS clusters=`xxx-dev-backend`
+        - ECS service=`xxx-dev-backend-worker`
         - tab `Tasks` > click bat ki `Task definition` > muc `Container definitions` > click mui ten so xuong > call CMD "laravel-worker"
         ![worker](screenshots/worker.png)
+        ---
+        ![taskdef_cmd](screenshots/taskdef_cmd.png)
     1. #### src code
         - `LaravelSampleCode/xxx-backend/Dockerfile`
         ```shell
