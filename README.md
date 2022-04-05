@@ -82,7 +82,7 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
     + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/` (ALB's DNS) on browser will see `This is our Home Page!!!`
     + access `http://demoalb-986586207.us-east-1.elb.amazonaws.com/app` (ALB's DNS) on browser will see `Hello, from App!`
 
-## note
+## refer info
 1. ### about folder `LaravelSampleCode`: xu li worker-redis-Laravel
     1. #### AWS Console
         - ECS service=`xxx-dev-backend-worker`
@@ -99,4 +99,45 @@ CONTAINER ID   IMAGE         COMMAND           CREATED         STATUS         PO
         ```shell
         "laravel-worker")
             exec /usr/bin/tini -- /usr/local/bin/php /usr/src/app/artisan queue:work"
+        ```
+1. ### tool check ecs exec
+    1. #### reference
+        - [github](https://github.com/aws-containers/amazon-ecs-exec-checker)
+    1. #### run CMD
+        - in case `aws_profile` is different from `default`
+        ```shell
+        export AWS_PROFILE=aws_profile
+        export AWS_REGION=us-west-2
+        TASK_ID=$(aws ecs list-tasks --cluster jil-stg-backend --service-name jil-stg-backend --output text --query 'taskArns[0]' --profile labor-stg)
+        echo $TASK_ID
+        => arn:aws:ecs:us-west-2:<AWS_ACCID!!!>:task/jil-stg-backend/<TASK_ID_SUFFIX!!!>
+        bash <( curl -Ls https://raw.githubusercontent.com/aws-containers/amazon-ecs-exec-checker/main/check-ecs-exec.sh ) jil-stg-backend $TASK_ID
+        =>
+        -------------------------------------------------------------
+        Prerequisites for check-ecs-exec.sh v0.7
+        -------------------------------------------------------------
+        jq      | OK (/usr/local/bin/jq)
+        AWS CLI | OK (/usr/local/bin/aws)
+
+        -------------------------------------------------------------
+        Prerequisites for the AWS CLI to use ECS Exec
+        -------------------------------------------------------------
+        AWS CLI Version        | OK (aws-cli/2.2.15 Python/3.8.8 Darwin/21.2.0 exe/x86_64 prompt/off)
+        Session Manager Plugin | OK (1.2.279.0)
+
+        -------------------------------------------------------------
+        Checks on ECS task and other resources
+        -------------------------------------------------------------
+        Region : us-west-2
+        Cluster: jil-stg-backend
+        Task   : arn:aws:ecs:us-west-2:<AWS_ACCID!!!>:task/jil-stg-backend/<TASK_ID_SUFFIX!!!>
+        -------------------------------------------------------------
+        Cluster Configuration  |
+            KMS Key       : Not Configured
+            Audit Logging : OVERRIDE
+            S3 Bucket Name: Not Configured
+            CW Log Group  : /ecs/jil-stg/backend/ecs_execute_command, Encryption Enabled: false
+        Can I ExecuteCommand?  | arn:aws:iam::<AWS_ACCID!!!>:user/Jil-Stg-Ecs-Exec-User
+
+        An error occurred (AccessDenied) when calling the SimulatePrincipalPolicy operation: User: arn:aws:iam::<AWS_ACCID!!!>:user/Jil-Stg-Ecs-Exec-User is not authorized to perform: iam:SimulatePrincipalPolicy on resource: arn:aws:iam::<AWS_ACCID!!!>:user/Jil-Stg-Ecs-Exec-User
         ```
